@@ -26,6 +26,9 @@ interface Props {
   aprobadas?: string[];
   isDesbloqueada?: (asig: Asignatura) => boolean;
   onTacharSemestre?: (asignaturas: Asignatura[]) => void;
+  enCurso?: string[];
+  onAsignaturaCursoClick?: (asig: Asignatura) => void;
+  creditosEnCurso?: number;
 }
 
 // Escala de verdes pastel de claro a oscuro (11 tonos)
@@ -45,7 +48,7 @@ const verdeScale = [
 
 const textColorForBg = (idx: number) => (idx < 6 ? "#205c36" : "#fff");
 
-const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], isDesbloqueada, onTacharSemestre }) => {
+const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], isDesbloqueada, onTacharSemestre, enCurso, onAsignaturaCursoClick, creditosEnCurso }) => {
   // Unificar todos los semestres en un solo array plano y numerarlos de forma continua
   const semestres: Semestre[] = malla.años.flatMap((a) => a.semestres);
   // Ordenar por año y semestre original
@@ -77,7 +80,25 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
           }
         }
       `}</style>
-      <h1 style={{ textAlign: "center", color: "#259a57", marginBottom: 32 }}>{malla.carrera}</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
+        <h1 style={{ textAlign: "center", color: "#259a57", marginBottom: 0 }}>{malla.carrera}</h1>
+        {creditosEnCurso && creditosEnCurso > 0 && (
+          <div style={{
+            background: '#ffe066',
+            color: '#8a6d1b',
+            padding: '8px 18px',
+            borderRadius: 10,
+            fontWeight: 600,
+            fontSize: 16,
+            marginLeft: 24,
+            boxShadow: '0 2px 8px #ffe06655',
+            minWidth: 160,
+            textAlign: 'right'
+          }}>
+            Créditos en curso: {creditosEnCurso}
+          </div>
+        )}
+      </div>
       <div
         className="malla-semestres"
         style={{
@@ -148,8 +169,36 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
                 {sem.asignaturas.map((asig) => {
                   const estaAprobada = aprobadas.includes(asig.codigo);
                   const desbloqueada = isDesbloqueada ? isDesbloqueada(asig) : true;
+                  const estaEnCurso = enCurso && enCurso.includes(asig.codigo);
+                  // Nuevo: ¿todos los prerrequisitos están aprobados o en curso, y al menos uno en curso?
+                  const todosPrereqAprobOEnCurso = asig.prerrequisitos.length > 0 && asig.prerrequisitos.every((pr: string) => (aprobadas.includes(pr) || (enCurso && enCurso.includes(pr))));
+                  const algunoPrereqEnCurso = asig.prerrequisitos.some((pr: string) => enCurso && enCurso.includes(pr));
+                  const mostrarNaranja = todosPrereqAprobOEnCurso && algunoPrereqEnCurso;
                   // Color de texto: si está aprobada, blanco; si no, siempre oscuro
                   const colorTexto = estaAprobada ? "#fff" : "#205c36";
+
+                  // Long press logic
+                  let longPressTimer: NodeJS.Timeout | null = null;
+                  const longPressDuration = 500; // ms
+
+                  const handleTouchStart = (e: React.TouchEvent) => {
+                    if (!onAsignaturaCursoClick) return;
+                    // Solo permite long press si está desbloqueada y NO está aprobada y no tiene prereq en curso
+                    if (!desbloqueada || estaAprobada || mostrarNaranja) return;
+                    longPressTimer = setTimeout(() => {
+                      onAsignaturaCursoClick(asig);
+                    }, longPressDuration);
+                  };
+                  const handleTouchEnd = (e: React.TouchEvent) => {
+                    if (longPressTimer) {
+                      clearTimeout(longPressTimer);
+                      longPressTimer = null;
+                    }
+                  };
+
+                  // Nuevo: si tiene prereq en curso y todos los demás aprobados/en curso, no es cliqueable
+                  const esCliqueable = (desbloqueada && !mostrarNaranja && !estaAprobada) || estaAprobada;
+
                   return (
                     <div
                       key={asig.codigo}
@@ -157,21 +206,40 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
                         border: `1.5px solid ${verdeScale[Math.min(idx + 2, verdeScale.length - 1)]}`,
                         borderRadius: 10,
                         padding: "10px 12px",
-                        background: estaAprobada ? "#38b36b" : desbloqueada ? "#fff" : "#f5f5f5",
-                        opacity: desbloqueada ? 1 : 0.5,
+                        background: estaAprobada
+                          ? "#38b36b"
+                          : estaEnCurso
+                          ? "#ffe066"
+                          : mostrarNaranja
+                          ? "#ffd8b0" // naranja claro
+                          : desbloqueada
+                          ? "#fff"
+                          : "#f5f5f5",
+                        opacity: esCliqueable ? 1 : 0.7,
                         textDecoration: estaAprobada ? "line-through" : "none",
                         color: desbloqueada ? colorTexto : "#888",
                         fontWeight: 500,
                         fontSize: 16,
                         marginBottom: 2,
-                        cursor: desbloqueada ? "pointer" : "not-allowed",
+                        cursor: esCliqueable ? "pointer" : "not-allowed",
                         boxShadow: estaAprobada ? "0 0 0 2px #259a57" : "none",
                         transition: "all 0.2s"
                       }}
-                      onClick={() => desbloqueada && onAsignaturaClick && onAsignaturaClick(asig)}
+                      onClick={() => esCliqueable && onAsignaturaClick && onAsignaturaClick(asig)}
+                      onContextMenu={e => {
+                        if (!esCliqueable) return;
+                        e.preventDefault();
+                        if (onAsignaturaCursoClick) {
+                          onAsignaturaCursoClick(asig);
+                        }
+                      }}
+                      onTouchStart={handleTouchStart}
+                      onTouchEnd={handleTouchEnd}
+                      onTouchCancel={handleTouchEnd}
                     >
                       <div style={{ fontWeight: 600 }}>{asig.nombre}</div>
                       <div style={{ fontSize: 12, color: estaAprobada ? "#fff" : "#259a57", marginTop: 2 }}>{asig.codigo} · {asig.creditos} créditos</div>
+                      {/* Aquí podrías mostrar más info */}
                     </div>
                   );
                 })}

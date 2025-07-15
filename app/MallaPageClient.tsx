@@ -7,6 +7,7 @@ export default function MallaPageClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [aprobadas, setAprobadas] = useState<string[]>([]);
+  const [enCurso, setEnCurso] = useState<string[]>([]);
 
   useEffect(() => {
     fetch("/data/malla.json")
@@ -49,12 +50,18 @@ export default function MallaPageClient() {
         const dependientes = getDependientes(asig.codigo, malla);
         setAprobadas(aprobadas.filter((c) => c !== asig.codigo && !dependientes.includes(c)));
       }
-    } else {
-      // Solo la apruebo si todos sus prerrequisitos están aprobados
-      const puedeAprobar = asig.prerrequisitos.every((pr: string) => aprobadas.includes(pr));
-      if (puedeAprobar) {
-        setAprobadas([...aprobadas, asig.codigo]);
-      }
+      // También la quitamos de enCurso si estuviera por error
+      setEnCurso(enCurso.filter((c) => c !== asig.codigo));
+      return;
+    }
+    if (enCurso.includes(asig.codigo)) {
+      setEnCurso(enCurso.filter((c) => c !== asig.codigo));
+      return;
+    }
+    // Solo la apruebo si todos sus prerrequisitos están aprobados
+    const puedeAprobar = asig.prerrequisitos.every((pr: string) => aprobadas.includes(pr));
+    if (puedeAprobar) {
+      setAprobadas([...aprobadas, asig.codigo]);
     }
   };
 
@@ -89,18 +96,41 @@ export default function MallaPageClient() {
     }
   };
 
+  // Manejar click derecho para marcar/desmarcar como "en curso"
+  const handleAsignaturaCursoClick = (asig: any) => {
+    if (aprobadas.includes(asig.codigo)) {
+      // No permitir marcar como en curso si ya está aprobada
+      return;
+    }
+    if (enCurso.includes(asig.codigo)) {
+      setEnCurso(enCurso.filter((c) => c !== asig.codigo));
+    } else {
+      setEnCurso([...enCurso, asig.codigo]);
+    }
+  };
+
+  // Calcular créditos de asignaturas en curso
+  const creditosEnCurso = malla
+    ? malla.años.flatMap((a: any) => a.semestres.flatMap((s: any) => s.asignaturas))
+        .filter((asig: any) => enCurso.includes(asig.codigo))
+        .reduce((acc: number, asig: any) => acc + (asig.creditos || 0), 0)
+    : 0;
+
   if (loading) return <div>Cargando malla curricular...</div>;
   if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
   if (!malla) return null;
 
   return (
-    <div style={{ padding: 32 }}>
+    <div style={{ padding: 0 }}>
       <MallaGrid
         malla={malla}
         onAsignaturaClick={handleAsignaturaClick}
         aprobadas={aprobadas}
         isDesbloqueada={isDesbloqueada}
         onTacharSemestre={handleTacharSemestre}
+        enCurso={enCurso}
+        onAsignaturaCursoClick={handleAsignaturaCursoClick}
+        creditosEnCurso={creditosEnCurso}
       />
     </div>
   );
