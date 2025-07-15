@@ -1,0 +1,524 @@
+{
+  "carrera": "Ingeniería Civil en Informática UACh",
+  "años": [
+    {
+      "año": 1,
+      "semestres": [
+        {
+          "semestre": 1,
+          "asignaturas": [
+            {
+              "codigo": "BAIN065",
+              "nombre": "Álgebra para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN067",
+              "nombre": "Geometría para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN069",
+              "nombre": "Química para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "INFO063",
+              "nombre": "Introducción a la Programación",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Programación"
+            },
+            {
+              "codigo": "INFO073",
+              "nombre": "Taller de Ingeniería: Introducción a la Profesión",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Talleres"
+            }
+          ]
+        },
+        {
+          "semestre": 2,
+          "asignaturas": [
+            {
+              "codigo": "BAIN071",
+              "nombre": "Comunicación Idioma Español",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "BAIN073",
+              "nombre": "Álgebra Lineal para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN065"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN075",
+              "nombre": "Cálculo en una Variable",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN065", "BAIN067"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "DYRE070",
+              "nombre": "Educación Física y Salud",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "ELECT12",
+              "nombre": "OFG 1",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "INFO081",
+              "nombre": "Programación",
+              "creditos": 5,
+              "prerrequisitos": ["INFO063"],
+              "area": "Programación"
+            },
+            {
+              "codigo": "INFO083",
+              "nombre": "Taller de Ingeniería: Programación Aplicada",
+              "creditos": 5,
+              "prerrequisitos": ["INFO073", "INFO063"],
+              "area": "Talleres"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "año": 2,
+      "semestres": [
+        {
+          "semestre": 3,
+          "asignaturas": [
+            {
+              "codigo": "BAIN077",
+              "nombre": "Física: Mecánica",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN067", "BAIN065"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN079",
+              "nombre": "Comunicación Idioma Inglés",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "BAIN081",
+              "nombre": "Ecuaciones Diferenciales para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN073", "BAIN075"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN083",
+              "nombre": "Cálculo en Varias Variables",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN075"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "INFO085",
+              "nombre": "Estructura de Datos y Algoritmos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO081"],
+              "area": "Programación"
+            },
+            {
+              "codigo": "INFO088",
+              "nombre": "Taller de Ingeniería: Estructura de Datos y Algoritmos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO083", "INFO081"],
+              "area": "Talleres"
+            }
+          ]
+        },
+        {
+          "semestre": 4,
+          "asignaturas": [
+            {
+              "codigo": "BAIN085",
+              "nombre": "Física: Ondas y Electromagnetismo",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN077", "BAIN075"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN087",
+              "nombre": "Métodos Numéricos para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN081"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "BAIN091",
+              "nombre": "Estadística y Probabilidades para Ingeniería",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN073"],
+              "area": "Ciencias Básicas"
+            },
+            {
+              "codigo": "INFO090",
+              "nombre": "Programación Orientada a Objeto",
+              "creditos": 5,
+              "prerrequisitos": ["INFO081"],
+              "area": "Programación"
+            },
+            {
+              "codigo": "INFO099",
+              "nombre": "Estructuras Discretas",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN073"],
+              "area": "Matemáticas"
+            },
+            {
+              "codigo": "INFO104",
+              "nombre": "Taller de Construcción de Software",
+              "creditos": 5,
+              "prerrequisitos": ["INFO088", "INFO085"],
+              "area": "Talleres"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "año": 3,
+      "semestres": [
+        {
+          "semestre": 5,
+          "asignaturas": [
+            {
+              "codigo": "BAIN140",
+              "nombre": "Inglés Instrumental",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN079"],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "EICI146",
+              "nombre": "Práctica Inicial",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN079", "BAIN077", "BAIN075", "BAIN073", "BAIN071", "BAIN069", "BAIN067", "BAIN065", "INFO073", "INFO063", "INFO090", "INFO099", "INFO104"],
+              "area": "Prácticas"
+            },
+            {
+              "codigo": "ELECT100",
+              "nombre": "Optativo de Especialización I",
+              "creditos": 5,
+              "prerrequisitos": [],
+              "area": "Optativos"
+            },
+            {
+              "codigo": "INFO128",
+              "nombre": "Arquitectura de Computadores",
+              "creditos": 5,
+              "prerrequisitos": ["INFO099", "INFO088", "BAIN091"],
+              "area": "Hardware"
+            },
+            {
+              "codigo": "INFO133",
+              "nombre": "Base de Datos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO104"],
+              "area": "Software"
+            },
+            {
+              "codigo": "INFO139",
+              "nombre": "Teoría de Autómatas",
+              "creditos": 5,
+              "prerrequisitos": ["INFO099", "INFO088"],
+              "area": "Teoría de la Computación"
+            },
+            {
+              "codigo": "INFO145",
+              "nombre": "Diseño y Análisis de Algoritmos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO085", "INFO099", "BAIN091"],
+              "area": "Programación"
+            }
+          ]
+        },
+        {
+          "semestre": 6,
+          "asignaturas": [
+            {
+              "codigo": "BAIN150",
+              "nombre": "Inglés Funcional",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN140"],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "INFO188",
+              "nombre": "Programación en Paradigmas Funcional y Paralelo",
+              "creditos": 5,
+              "prerrequisitos": ["INFO145", "INFO128", "INFO133", "INFO090"],
+              "area": "Programación"
+            },
+            {
+              "codigo": "INFO198",
+              "nombre": "Sistemas Operativos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO128", "INFO088"],
+              "area": "Software"
+            },
+            {
+              "codigo": "INFO200",
+              "nombre": "Investigación de Operativa",
+              "creditos": 5,
+              "prerrequisitos": ["BAIN091", "BAIN073", "BAIN083"],
+              "area": "Gestión"
+            },
+            {
+              "codigo": "INFO208",
+              "nombre": "Ingeniería de Requisitos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO133", "INFO104"],
+              "area": "Ingeniería de Software"
+            },
+            {
+              "codigo": "INFO229",
+              "nombre": "Arquitectura de Software",
+              "creditos": 5,
+              "prerrequisitos": ["INFO133"],
+              "area": "Ingeniería de Software"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "año": 4,
+      "semestres": [
+        {
+          "semestre": 7,
+          "asignaturas": [
+            {
+              "codigo": "ELECT101",
+              "nombre": "Optativo de Especialización II",
+              "creditos": 5,
+              "prerrequisitos": ["ELECT100"],
+              "area": "Optativos"
+            },
+            {
+              "codigo": "INFO221",
+              "nombre": "Gestión Organizacional",
+              "creditos": 5,
+              "prerrequisitos": ["INFO104", "EICI146", "BAIN083"],
+              "area": "Gestión"
+            },
+            {
+              "codigo": "INFO239",
+              "nombre": "Comunicaciones",
+              "creditos": 5,
+              "prerrequisitos": ["INFO198", "INFO139"],
+              "area": "Redes y Comunicaciones"
+            },
+            {
+              "codigo": "INFO245",
+              "nombre": "Interacción Humano-Computador",
+              "creditos": 5,
+              "prerrequisitos": ["INFO208", "BAIN150"],
+              "area": "Ingeniería de Software"
+            },
+            {
+              "codigo": "INFO248",
+              "nombre": "Ingeniería de Software",
+              "creditos": 5,
+              "prerrequisitos": ["INFO208", "INFO229"],
+              "area": "Ingeniería de Software"
+            },
+            {
+              "codigo": "INFO257",
+              "nombre": "Inteligencia Artificial",
+              "creditos": 5,
+              "prerrequisitos": ["INFO188", "INFO145"],
+              "area": "Inteligencia Artificial"
+            }
+          ]
+        },
+        {
+          "semestre": 8,
+          "asignaturas": [
+            {
+              "codigo": "ELECT111",
+              "nombre": "Optativo de Especialización III",
+              "creditos": 5,
+              "prerrequisitos": ["ELECT101"],
+              "area": "Optativos"
+            },
+            {
+              "codigo": "INFO270",
+              "nombre": "Evaluación de Proyectos Informáticos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO221", "INFO200", "INFO248"],
+              "area": "Gestión"
+            },
+            {
+              "codigo": "INFO276",
+              "nombre": "Redes",
+              "creditos": 5,
+              "prerrequisitos": ["INFO239"],
+              "area": "Redes y Comunicaciones"
+            },
+            {
+              "codigo": "INFO278",
+              "nombre": "Sistemas de Información",
+              "creditos": 5,
+              "prerrequisitos": ["INFO248", "INFO221"],
+              "area": "Ingeniería de Software"
+            },
+            {
+              "codigo": "INFO280",
+              "nombre": "Seminario de Ética Profesional",
+              "creditos": 5,
+              "prerrequisitos": ["INFO221"],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "INFO282",
+              "nombre": "Taller de Ingeniería de Software",
+              "creditos": 5,
+              "prerrequisitos": ["INFO248", "INFO245"],
+              "area": "Talleres"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "año": 5,
+      "semestres": [
+        {
+          "semestre": 9,
+          "asignaturas": [
+            {
+              "codigo": "ELECT112",
+              "nombre": "Optativo de Profundización I",
+              "creditos": 5,
+              "prerrequisitos": ["ELECT111"],
+              "area": "Optativos"
+            },
+            {
+              "codigo": "INFO283",
+              "nombre": "Taller de Emprendimiento",
+              "creditos": 5,
+              "prerrequisitos": ["INFO270"],
+              "area": "Talleres"
+            },
+            {
+              "codigo": "INFO286",
+              "nombre": "Sistemas de Gestión",
+              "creditos": 5,
+              "prerrequisitos": ["INFO270", "INFO278"],
+              "area": "Gestión"
+            },
+            {
+              "codigo": "INFO288",
+              "nombre": "Sistemas Distribuidos",
+              "creditos": 5,
+              "prerrequisitos": ["INFO198"],
+              "area": "Software"
+            },
+            {
+              "codigo": "INFO289",
+              "nombre": "Taller de Integración de Tecnología de la Información y Comunicación",
+              "creditos": 5,
+              "prerrequisitos": ["INFO104", "INFO276"],
+              "area": "Talleres"
+            },
+            {
+              "codigo": "INFO290",
+              "nombre": "Métodos y Modelos de Ingeniería de Software",
+              "creditos": 5,
+              "prerrequisitos": ["INFO282"],
+              "area": "Ingeniería de Software"
+            }
+          ]
+        },
+        {
+          "semestre": 10,
+          "asignaturas": [
+            {
+              "codigo": "ELECT116",
+              "nombre": "Optativo de Profundización II",
+              "creditos": 5,
+              "prerrequisitos": ["ELECT112"],
+              "area": "Optativos"
+            },
+            {
+              "codigo": "INFO293",
+              "nombre": "Tecnología de la Información para la Gestión Organizacional",
+              "creditos": 5,
+              "prerrequisitos": ["INFO286", "INFO280"],
+              "area": "Gestión"
+            },
+            {
+              "codigo": "INFO294",
+              "nombre": "Realidad Tecnológica Nacional",
+              "creditos": 5,
+              "prerrequisitos": ["INFO248"],
+              "area": "Formación General"
+            },
+            {
+              "codigo": "INFO297",
+              "nombre": "Taller de Título",
+              "creditos": 5,
+              "prerrequisitos": ["INFO289", "INFO290", "INFO286"],
+              "area": "Talleres"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "año": 6,
+      "semestres": [
+        {
+          "semestre": 11,
+          "asignaturas": [
+            {
+              "codigo": "INFO285",
+              "nombre": "Práctica Profesional (a) y (b)",
+              "creditos": 5,
+              "prerrequisitos": ["INFO294"],
+              "area": "Prácticas"
+            },
+            {
+              "codigo": "INFO298",
+              "nombre": "Proyecto de Título: Artículo de Investigación (b)",
+              "creditos": 5,
+              "prerrequisitos": ["INFO297"],
+              "area": "Titulación"
+            },
+            {
+              "codigo": "INFO299",
+              "nombre": "Proyecto de Título: Memoria (a)",
+              "creditos": 5,
+              "prerrequisitos": ["INFO297"],
+              "area": "Titulación"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
