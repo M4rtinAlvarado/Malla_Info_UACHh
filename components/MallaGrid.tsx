@@ -206,6 +206,30 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
           </div>
         </div>
       )}
+      {/* Label flotante de créditos en curso solo en móvil */}
+      {creditosEnCurso && creditosEnCurso > 0 && (
+        <div className="creditos-flotante-movil"
+          style={{
+            display: 'none', // por defecto oculto, visible solo en móvil por CSS
+            position: 'fixed',
+            left: 16,
+            bottom: 24,
+            zIndex: 1001,
+            background: '#ffe066',
+            color: '#8a6d1b',
+            padding: '10px 22px',
+            borderRadius: 12,
+            fontWeight: 600,
+            fontSize: 16,
+            boxShadow: '0 2px 8px #ffe06655',
+            minWidth: 140,
+            textAlign: 'center',
+            border: '2px solid #e6c200',
+          }}
+        >
+          Créditos en curso: {creditosEnCurso}
+        </div>
+      )}
       <style>{`
         @media (max-width: 700px) {
           .malla-semestres {
@@ -221,6 +245,20 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
             width: 100% !important;
             margin: 0 auto !important;
           }
+          .creditos-flotante-movil {
+            display: block !important;
+          }
+          .creditos-label-superior {
+            display: none !important;
+          }
+        }
+        @media (min-width: 701px) {
+          .creditos-flotante-movil {
+            display: none !important;
+          }
+          .creditos-label-superior {
+            display: block !important;
+          }
         }
       `}</style>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap' }}>
@@ -228,7 +266,7 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
           {malla.carrera}
         </h1>
         {creditosEnCurso && creditosEnCurso > 0 && (
-          <div style={{
+          <div className="creditos-label-superior" style={{
             background: '#ffe066',
             color: '#8a6d1b',
             padding: '8px 18px',
