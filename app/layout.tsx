@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Malla Curricular",
-  description: "Malla Curricular de la Universidad de Guanajuato",
+  title: "Malla Interactiva UACh",
+  description: "Malla Curricular Interactiva de la Universidad Austral de Chile",
 };
 
 export default function RootLayout({
