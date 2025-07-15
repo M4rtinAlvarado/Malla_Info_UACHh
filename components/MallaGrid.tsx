@@ -54,6 +54,21 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
   // Ordenar por año y semestre original
   const semestresContinuos = semestres.map((sem, idx) => ({ ...sem, semestreContinuo: idx + 1 }));
   const [showHelp, setShowHelp] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
+
+  React.useEffect(() => {
+    const checkTouch = () => {
+      if (typeof window !== 'undefined') {
+        const isTouchDevice =
+          (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+          (!!navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+        setIsTouch(isTouchDevice);
+      }
+    };
+    checkTouch();
+    window.addEventListener('resize', checkTouch);
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
 
   return (
     <div
@@ -109,12 +124,13 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
           onClick={() => setShowHelp(false)}
         >
           <div
+            className="modal-ayuda"
             style={{
               background: '#fff',
               borderRadius: 18,
               padding: '32px 24px',
               maxWidth: 800,
-              minWidth: 320,
+              minWidth: 220,
               width: '90vw',
               boxShadow: '0 4px 24px #0002',
               position: 'relative',
@@ -125,6 +141,8 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
               display: 'flex',
               flexDirection: 'column',
               gap: 0,
+              maxHeight: '90vh',
+              overflowY: 'auto',
             }}
             onClick={e => e.stopPropagation()}
           >
@@ -140,44 +158,69 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
                 color: '#259a57',
                 cursor: 'pointer',
                 fontWeight: 700,
+                zIndex: 10,
               }}
               aria-label="Cerrar ayuda"
               title="Cerrar"
             >
               ×
             </button>
-            <div className="modal-help-content" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
-              <h2 style={{ color: '#259a57', marginTop: 0, marginBottom: 16, fontSize: 22, textAlign: 'center', width: '100%' }}>¿Cómo funciona la malla?</h2>
-              <div className="modal-help-columns" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <ul style={{ paddingLeft: 18, marginBottom: 18 }}>
-                    <li><b>Click izquierdo</b> en una asignatura desbloqueada: la marcas como <b>aprobada</b> (verde).</li>
-                    <li><b>Click izquierdo</b> en una asignatura verde: la desmarcas como aprobada.</li>
-                    <li><b>Click derecho</b> <i>(o mantener presionado 1.2s en móvil)</i> en una asignatura desbloqueada: la marcas como <b>en curso</b> (amarillo).</li>
-                    <li><b>Click izquierdo</b> en una asignatura amarilla: la quitas de "en curso".</li>
-                    <li>Las asignaturas en naranja claro no pueden ser seleccionadas porque tienen prerrequisitos "en curso".</li>
-                    <li>Las asignaturas grises están bloqueadas por prerrequisitos no cumplidos.</li>
-                  </ul>
+            {/* Explicación para PC o móvil según isTouch */}
+            {isTouch ? (
+              <div className="modal-help-content modal-help-movil" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
+                <h2 style={{ color: '#259a57', marginTop: 0, marginBottom: 16, fontSize: 20, textAlign: 'center', width: '100%' }}>¿Cómo funciona la malla?</h2>
+                <ul style={{ paddingLeft: 18, marginBottom: 18 }}>
+                  <li><b>Toque simple</b> en una asignatura desbloqueada: la marcas como <b>aprobada</b> (verde).</li>
+                  <li><b>Toque simple</b> en una asignatura verde: la desmarcas como aprobada.</li>
+                  <li><b>Pulsación larga (1.2s)</b> en una asignatura desbloqueada: la marcas como <b>en curso</b> (amarillo).</li>
+                  <li><b>Toque simple</b> en una asignatura amarilla: la quitas de "en curso".</li>
+                  <li>Las asignaturas en naranja claro no pueden ser seleccionadas porque tienen prerrequisitos "en curso".</li>
+                  <li>Las asignaturas grises están bloqueadas por prerrequisitos no cumplidos.</li>
+                </ul>
+                <div style={{ marginBottom: 10 }}>
+                  <b>Colores:</b>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#38b36b', borderRadius: 4, marginRight: 8, border: '1.5px solid #259a57', verticalAlign: 'middle' }}></span> Aprobada</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffe066', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6c200', verticalAlign: 'middle' }}></span> En curso</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffd8b0', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6a259', verticalAlign: 'middle' }}></span> Prerrequisito en curso</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#f5f5f5', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Bloqueada</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#fff', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Disponible</span>
+                  </div>
                 </div>
-                <div style={{ flex: 1, minWidth: 0, paddingLeft: 24, borderLeft: '1.5px solid #e6f9e6', display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center' }}>
-                  <b style={{ marginBottom: 8 }}>Colores:</b>
-                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#38b36b', borderRadius: 4, marginRight: 8, border: '1.5px solid #259a57', verticalAlign: 'middle' }}></span> Aprobada</span>
-                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffe066', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6c200', verticalAlign: 'middle' }}></span> En curso</span>
-                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffd8b0', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6a259', verticalAlign: 'middle' }}></span> Prerrequisito en curso</span>
-                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#f5f5f5', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Bloqueada</span>
-                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#fff', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Disponible</span>
+                <div style={{ fontSize: 14, color: '#888', marginTop: 18, textAlign: 'center', width: '100%' }}>
+                  Puedes cerrar esta ayuda tocando fuera del recuadro o en la <b>×</b>.
                 </div>
               </div>
-              <div style={{ fontSize: 14, color: '#888', marginTop: 18, textAlign: 'center', width: '100%' }}>
-                Puedes cerrar esta ayuda haciendo click fuera del recuadro o en la <b>×</b>.
+            ) : (
+              <div className="modal-help-content modal-help-pc" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
+                <h2 style={{ color: '#259a57', marginTop: 0, marginBottom: 16, fontSize: 22, textAlign: 'center', width: '100%' }}>¿Cómo funciona la malla?</h2>
+                <div className="modal-help-columns" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <ul style={{ paddingLeft: 18, marginBottom: 18 }}>
+                      <li><b>Click izquierdo</b> en una asignatura desbloqueada: la marcas como <b>aprobada</b> (verde).</li>
+                      <li><b>Click izquierdo</b> en una asignatura verde: la desmarcas como aprobada.</li>
+                      <li><b>Click derecho</b> en una asignatura desbloqueada: la marcas como <b>en curso</b> (amarillo).</li>
+                      <li><b>Click izquierdo</b> en una asignatura amarilla: la quitas de "en curso".</li>
+                      <li>Las asignaturas en naranja claro no pueden ser seleccionadas porque tienen prerrequisitos "en curso".</li>
+                      <li>Las asignaturas grises están bloqueadas por prerrequisitos no cumplidos.</li>
+                    </ul>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0, paddingLeft: 24, borderLeft: '1.5px solid #e6f9e6', display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center' }}>
+                    <b style={{ marginBottom: 8 }}>Colores:</b>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#38b36b', borderRadius: 4, marginRight: 8, border: '1.5px solid #259a57', verticalAlign: 'middle' }}></span> Aprobada</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffe066', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6c200', verticalAlign: 'middle' }}></span> En curso</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffd8b0', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6a259', verticalAlign: 'middle' }}></span> Prerrequisito en curso</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#f5f5f5', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Bloqueada</span>
+                    <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#fff', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Disponible</span>
+                  </div>
+                </div>
+                <div style={{ fontSize: 14, color: '#888', marginTop: 18, textAlign: 'center', width: '100%' }}>
+                  Puedes cerrar esta ayuda haciendo click fuera del recuadro o en la <b>×</b>.
+                </div>
               </div>
-            </div>
+            )}
             <style>{`
               @media (min-width: 700px) {
-                .modal-help-content {
-                  flex-direction: column !important;
-                  width: 100%;
-                }
                 .modal-help-columns {
                   flex-direction: row !important;
                   gap: 32px !important;
@@ -189,17 +232,14 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
                 }
               }
               @media (max-width: 699px) {
-                .modal-help-content {
-                  flex-direction: column !important;
-                }
-                .modal-help-columns {
-                  flex-direction: column !important;
-                  gap: 0 !important;
-                  align-items: stretch !important;
-                }
-                .modal-help-columns > div {
-                  padding-left: 0 !important;
-                  border-left: none !important;
+                .modal-ayuda {
+                  max-width: 98vw !important;
+                  min-width: 0 !important;
+                  padding: 18px 6px !important;
+                  border-radius: 12px !important;
+                  font-size: 15px !important;
+                  max-height: 90vh !important;
+                  overflow-y: auto !important;
                 }
               }
             `}</style>
