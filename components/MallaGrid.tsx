@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface Asignatura {
   codigo: string;
@@ -53,6 +53,7 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
   const semestres: Semestre[] = malla.años.flatMap((a) => a.semestres);
   // Ordenar por año y semestre original
   const semestresContinuos = semestres.map((sem, idx) => ({ ...sem, semestreContinuo: idx + 1 }));
+  const [showHelp, setShowHelp] = useState(false);
 
   return (
     <div
@@ -63,6 +64,148 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
         fontFamily: "Segoe UI, Arial, sans-serif"
       }}
     >
+      {/* Botón de ayuda flotante */}
+      <button
+        onClick={() => setShowHelp(true)}
+        style={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          zIndex: 1000,
+          background: '#259a57',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '50%',
+          width: 56,
+          height: 56,
+          fontSize: 28,
+          fontWeight: 700,
+          boxShadow: '0 2px 8px #259a5755',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'background 0.2s',
+        }}
+        aria-label="Ayuda"
+        title="Ayuda"
+      >
+        ?
+      </button>
+      {/* Modal de ayuda */}
+      {showHelp && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.35)',
+          zIndex: 2000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+          onClick={() => setShowHelp(false)}
+        >
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 18,
+              padding: '32px 24px',
+              maxWidth: 800,
+              minWidth: 320,
+              width: '90vw',
+              boxShadow: '0 4px 24px #0002',
+              position: 'relative',
+              color: '#205c36',
+              fontSize: 17,
+              fontWeight: 400,
+              lineHeight: 1.6,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 0,
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowHelp(false)}
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 16,
+                background: 'none',
+                border: 'none',
+                fontSize: 26,
+                color: '#259a57',
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+              aria-label="Cerrar ayuda"
+              title="Cerrar"
+            >
+              ×
+            </button>
+            <div className="modal-help-content" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
+              <h2 style={{ color: '#259a57', marginTop: 0, marginBottom: 16, fontSize: 22, textAlign: 'center', width: '100%' }}>¿Cómo funciona la malla?</h2>
+              <div className="modal-help-columns" style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <ul style={{ paddingLeft: 18, marginBottom: 18 }}>
+                    <li><b>Click izquierdo</b> en una asignatura desbloqueada: la marcas como <b>aprobada</b> (verde).</li>
+                    <li><b>Click izquierdo</b> en una asignatura verde: la desmarcas como aprobada.</li>
+                    <li><b>Click derecho</b> <i>(o mantener presionado 1.2s en móvil)</i> en una asignatura desbloqueada: la marcas como <b>en curso</b> (amarillo).</li>
+                    <li><b>Click izquierdo</b> en una asignatura amarilla: la quitas de "en curso".</li>
+                    <li>Las asignaturas en naranja claro no pueden ser seleccionadas porque tienen prerrequisitos "en curso".</li>
+                    <li>Las asignaturas grises están bloqueadas por prerrequisitos no cumplidos.</li>
+                  </ul>
+                </div>
+                <div style={{ flex: 1, minWidth: 0, paddingLeft: 24, borderLeft: '1.5px solid #e6f9e6', display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center' }}>
+                  <b style={{ marginBottom: 8 }}>Colores:</b>
+                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#38b36b', borderRadius: 4, marginRight: 8, border: '1.5px solid #259a57', verticalAlign: 'middle' }}></span> Aprobada</span>
+                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffe066', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6c200', verticalAlign: 'middle' }}></span> En curso</span>
+                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#ffd8b0', borderRadius: 4, marginRight: 8, border: '1.5px solid #e6a259', verticalAlign: 'middle' }}></span> Prerrequisito en curso</span>
+                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#f5f5f5', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Bloqueada</span>
+                  <span><span style={{ display: 'inline-block', width: 18, height: 18, background: '#fff', borderRadius: 4, marginRight: 8, border: '1.5px solid #bbb', verticalAlign: 'middle' }}></span> Disponible</span>
+                </div>
+              </div>
+              <div style={{ fontSize: 14, color: '#888', marginTop: 18, textAlign: 'center', width: '100%' }}>
+                Puedes cerrar esta ayuda haciendo click fuera del recuadro o en la <b>×</b>.
+              </div>
+            </div>
+            <style>{`
+              @media (min-width: 700px) {
+                .modal-help-content {
+                  flex-direction: column !important;
+                  width: 100%;
+                }
+                .modal-help-columns {
+                  flex-direction: row !important;
+                  gap: 32px !important;
+                  align-items: flex-start !important;
+                  justify-content: center !important;
+                }
+                .modal-help-columns > div {
+                  min-width: 0;
+                }
+              }
+              @media (max-width: 699px) {
+                .modal-help-content {
+                  flex-direction: column !important;
+                }
+                .modal-help-columns {
+                  flex-direction: column !important;
+                  gap: 0 !important;
+                  align-items: stretch !important;
+                }
+                .modal-help-columns > div {
+                  padding-left: 0 !important;
+                  border-left: none !important;
+                }
+              }
+            `}</style>
+          </div>
+        </div>
+      )}
       <style>{`
         @media (max-width: 700px) {
           .malla-semestres {
@@ -201,7 +344,7 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
 
                   // Long press logic
                   let longPressTimer: NodeJS.Timeout | null = null;
-                  const longPressDuration = 500; // ms
+                  const longPressDuration = 1200; // ms (1.2 segundos)
 
                   const handleTouchStart = (e: React.TouchEvent) => {
                     if (!onAsignaturaCursoClick) return;
