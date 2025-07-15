@@ -80,8 +80,10 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
           }
         }
       `}</style>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
-        <h1 style={{ textAlign: "center", color: "#259a57", marginBottom: 0 }}>{malla.carrera}</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap' }}>
+        <h1 style={{ textAlign: "center", color: "#259a57", marginBottom: 0, flex: 1, fontSize: 32 }}>
+          {malla.carrera}
+        </h1>
         {creditosEnCurso && creditosEnCurso > 0 && (
           <div style={{
             background: '#ffe066',
@@ -93,11 +95,31 @@ const MallaGrid: React.FC<Props> = ({ malla, onAsignaturaClick, aprobadas = [], 
             marginLeft: 24,
             boxShadow: '0 2px 8px #ffe06655',
             minWidth: 160,
-            textAlign: 'right'
+            textAlign: 'right',
+            marginTop: 12
           }}>
             Créditos en curso: {creditosEnCurso}
           </div>
         )}
+        <style>{`
+          @media (max-width: 700px) {
+            .titulo-label-stack {
+              flex-direction: column !important;
+              align-items: center !important;
+              gap: 10px !important;
+            }
+            .titulo-label-stack h1 {
+              font-size: 22px !important;
+              text-align: center !important;
+            }
+            .titulo-label-stack .creditos-label {
+              font-size: 15px !important;
+              min-width: unset !important;
+              margin-left: 0 !important;
+              text-align: center !important;
+            }
+          }
+        `}</style>
       </div>
       <div
         className="malla-semestres"
